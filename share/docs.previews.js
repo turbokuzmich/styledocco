@@ -94,8 +94,10 @@ var addIframe = function(codeEl, support, iframeId) {
   iframeEl.setAttribute('scrolling', 'no');
   iframeEl.name = 'iframe' + iframeId++;
   iframeEl.addEventListener('load', function() {
-    var htmlEl, bodyEl, scriptEl, styleEl, headEl, oldHeadEl, doc;
+    var htmlEl, bodyEl, scriptEl, styleEl, headEl, oldHeadEl, doc, baseEl;
     doc = this.contentDocument;
+    baseEl = doc.createElement('base');
+    baseEl.setAttribute('href', location.protocol + '//' + location.host);
     // Abort if we're loading a data uri in a browser without same
     // origin data uri support.
     if (!support.sameOriginDataUri && this.src !== previewUrl) {
@@ -112,6 +114,7 @@ var addIframe = function(codeEl, support, iframeId) {
     headEl = doc.createElement('head');
     headEl.appendChild(styleEl = doc.createElement('style'));
     headEl.appendChild(scriptEl = doc.createElement('script'));
+    headEl.appendChild(baseEl);
     scriptEl.textContent = scripts;
     styleEl.textContent = styles;
     oldHeadEl = doc.getElementsByTagName('head')[0];
